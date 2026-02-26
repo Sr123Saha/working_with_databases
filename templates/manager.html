@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Менеджер – Учёт товаров</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; margin-bottom: 20px; width: 100%; }
+        th, td { border: 1px solid #c88989; padding: 4px 8px; font-size: 14px; }
+        th { background: #da9f9f; }
+        h2 { margin-top: 30px; }
+        pre { background: #e0da96; padding: 8px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Страница менеджера</h1>
+
+    <p>
+        <a href="{{ url_for('supplier_page') }}">Перейти на страницу поставщика</a>
+    </p>
+
+    <h2>Товары</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Товар</th>
+            <th>Категория</th>
+            <th>Поставщик</th>
+            <th>Цена</th>
+            <th>Остаток</th>
+        </tr>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.product_id }}</td>
+            <td>{{ p.product_name }}</td>
+            <td>{{ p.category_name }}</td>
+            <td>{{ p.supplier_name }}</td>
+            <td>{{ "%.2f"|format(p.price) }}</td>
+            <td>{{ p.stock_qty }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Поставки (только просмотр)</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Товар</th>
+            <th>Дата</th>
+            <th>Количество</th>
+        </tr>
+        {% for d in deliveries %}
+        <tr>
+            <td>{{ d.delivery_id }}</td>
+            <td>{{ d.product_name }}</td>
+            <td>{{ d.delivery_date }}</td>
+            <td>{{ d.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>EXPLAIN QUERY PLAN (v_products_full)</h2>
+    <pre>
+{% for row in plan %}
+{{ row }}
+{% endfor %}
+    </pre>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Поставщик – Учёт товаров</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; margin-bottom: 20px; width: 100%; }
+        th, td { border: 1px solid #d37b7b; padding: 4px 8px; font-size: 14px; }
+        th { background: #c9b1b1; }
+        h2 { margin-top: 30px; }
+        form { margin-top: 10px; }
+        input, select { padding: 4px; font-size: 14px; }
+        pre { background: #eae495; padding: 8px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Страница поставщика</h1>
+
+    <p>    
+        <a href="{{ url_for('manager_page') }}">Перейти на страницу менеджера</a>
+    </p>
+
+    <h2>Товары</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Товар</th>
+            <th>Категория</th>
+            <th>Поставщик</th>
+            <th>Цена</th>
+            <th>Остаток</th>
+        </tr>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.product_id }}</td>
+            <td>{{ p.product_name }}</td>
+            <td>{{ p.category_name }}</td>
+            <td>{{ p.supplier_name }}</td>
+            <td>{{ "%.2f"|format(p.price) }}</td>
+            <td>{{ p.stock_qty }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Добавить поставку (роль: поставщик)</h2>
+    <form method="post" action="{{ url_for('add_delivery') }}">
+        <label>Товар:
+            <select name="product_id">
+                {% for p in all_products %}
+                <option value="{{ p.product_id }}">{{ p.product_name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>Дата:
+            <input type="date" name="delivery_date" required>
+        </label>
+        <label>Количество:
+            <input type="number" name="quantity" min="1" required>
+        </label>
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <h2>Поставки</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Товар</th>
+            <th>Дата</th>
+            <th>Количество</th>
+        </tr>
+        {% for d in deliveries %}
+        <tr>
+            <td>{{ d.delivery_id }}</td>
+            <td>{{ d.product_name }}</td>
+            <td>{{ d.delivery_date }}</td>
+            <td>{{ d.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>EXPLAIN QUERY PLAN (v_products_full)</h2>
+    <pre>
+{% for row in plan %}
+{{ row }}
+{% endfor %}
+    </pre>
+</body>
+</html>
