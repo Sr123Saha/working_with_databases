@@ -18,10 +18,10 @@ def get_user_role(username: str | None):
     cur = conn.cursor()
     row = cur.execute(
         """SELECT r.role_name
-           FROM users u
-           JOIN user_roles ur ON ur.user_id = u.user_id
-           JOIN roles r ON r.role_id = ur.role_id
-           WHERE u.user_name = ?""",
+            FROM users u
+            JOIN user_roles ur ON ur.user_id = u.user_id
+            JOIN roles r ON r.role_id = ur.role_id
+            WHERE u.user_name = ?""",
         (username,),
     ).fetchone()
     conn.close()
@@ -37,9 +37,9 @@ def load_common_data():
 
     deliveries = cur.execute(
         """SELECT d.delivery_id, p.product_name, d.delivery_date, d.quantity
-           FROM deliveries d
-           JOIN products p ON p.product_id = d.product_id
-           ORDER BY d.delivery_date DESC, d.delivery_id DESC"""
+            FROM deliveries d
+            JOIN products p ON p.product_id = d.product_id
+            ORDER BY d.delivery_date DESC, d.delivery_id DESC"""
     ).fetchall()
 
     all_products = cur.execute(
